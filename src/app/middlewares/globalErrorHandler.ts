@@ -10,7 +10,7 @@ import { errorLogger } from '../../shared/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   if (config.env === 'development') {
-    console.log(error);
+    console.log(JSON.stringify(error, null, 2));
   } else {
     errorLogger.error(error);
   }
