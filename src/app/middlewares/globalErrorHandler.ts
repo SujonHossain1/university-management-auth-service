@@ -10,7 +10,7 @@ import { errorLogger } from '../../shared/logger';
 
 const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
   if (config.env === 'development') {
-    console.log(JSON.stringify(error, null, 2));
+    console.log(error);
   } else {
     errorLogger.error(error);
   }
@@ -26,7 +26,6 @@ const globalErrorHandler: ErrorRequestHandler = (error, req, res, next) => {
     errorMessages = errors.errorMessages;
   } else if (error instanceof ZodError) {
     const errors = handleZodError(error);
-    console.log({ errors });
     statusCode = errors.statusCode;
     message = errors.message;
     errorMessages = errors.errorMessages;

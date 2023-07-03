@@ -7,7 +7,6 @@ const createUser: RequestHandler = catchAsync(async (req, res, next) => {
   const { user } = req.body;
 
   const result = await userService.createUser(user);
-  next();
 
   sendResponse(res, {
     statusCode: 201,
@@ -15,6 +14,8 @@ const createUser: RequestHandler = catchAsync(async (req, res, next) => {
     data: result,
     message: 'Successfully created user',
   });
+
+  next();
 });
 
 export const UserController = {

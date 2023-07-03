@@ -1,3 +1,4 @@
+/* eslint-disable no-unused-expressions */
 import { Server } from 'http';
 import mongoose from 'mongoose';
 import app from './app';
@@ -14,9 +15,15 @@ let server: Server;
 const bootstrap = async () => {
   try {
     await mongoose.connect(config.database_url as string);
-    logger.info(`Database connected successfully`);
+    config.env === 'production'
+      ? logger.info(`Database connected successfully`)
+      : console.log(`Database connected successfully`);
     server = app.listen(config.port, () => {
-      logger.info(`Server is listening on port ${config.port}`);
+      if (config.env === 'production') {
+        logger.info(`Server running on port ${config.port}`);
+      } else {
+        console.log(`Server running on port ${config.port}`);
+      }
     });
   } catch (err) {
     errorLogger.error(`Error while connecting to database: ${err}`);
