@@ -1,5 +1,6 @@
 import httpStatus from 'http-status';
 import ApiError from '../../../errors/ApiError';
+import { PaginationHelper } from '../../../helpers/paginationHelper';
 import {
   IGenericResponse,
   IPaginationOptions,
@@ -32,10 +33,11 @@ const createSemester = async (
 const getAllSemester = async (
   paginationOptions: IPaginationOptions
 ): Promise<IGenericResponse<IAcademicSemester[]>> => {
-  const { page = 1, limit = 10 } = paginationOptions;
-  const skip = (Number(page) - 1) * Number(limit);
+  const { page, limit, skip, sortBy, sortOrder } =
+    PaginationHelper.calculatePagination(paginationOptions);
 
-  const result = await AcademicSemester.find({}, {})
+  const result = await AcademicSemester.find({})
+    .sort({ [sortBy]: sortOrder })
     .skip(skip)
     .limit(Number(limit));
   const total = await AcademicSemester.countDocuments();
